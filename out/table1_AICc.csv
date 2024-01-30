@@ -1,0 +1,27 @@
+model,AICc,deltaAIC,w
+length,603.421,16.545,0
+length + wetland,604.121,17.245,0
+length + season,597.013,10.137,0.003
+length + wetland + season,597.698,10.822,0.002
+season + wetland,602.26,15.384,0
+wetland,612.837,25.961,0
+length*wetland,605.902,19.026,0
+length*wetland + season,599.493,12.617,0.001
+season,601.577,14.701,0
+length*season,586.876,0,0.43
+length*season + wetland,587.685,0.809,0.287
+season*wetland,604.259,17.383,0
+season*wetland + length,599.697,12.821,0.001
+transect,614.014,27.138,0
+transect + wetland,614.706,27.83,0
+transect + season,603.435,16.559,0
+transect + length,605.332,18.456,0
+transect*season,605.346,18.47,0
+transect*length,603.026,16.15,0
+transect*wetland,616.139,29.263,0
+transect + wetland + season + length,599.602,12.726,0.001
+transect + wetland + season,604.116,17.24,0
+transect + wetland + length,606.036,19.16,0
+transect +season + length,598.914,12.038,0.001
+length*season + transect,588.802,1.926,0.164
+length*season + transect + wetland,589.62,2.744,0.109
