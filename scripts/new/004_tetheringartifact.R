@@ -99,8 +99,8 @@ p5 <- mort_summary %>%
            position = position_dodge())+
   theme_classic()+
   
-  scale_fill_manual(values = c("steelblue4","darkolivegreen", "tan4"),
-                    labels = c("crushed", "empty", "missing"))+
+  scale_fill_manual(values = c("steelblue4","mediumpurple4", "tan4"),
+                    labels = c("crushed (Crayfish)", "empty (Giant Water Bug)", "missing (Greater Siren)"))+
   theme(legend.title = element_blank(),
         legend.position = c(.75,.9))+
   labs(y = "Artifact Count",
@@ -149,12 +149,15 @@ patch.artifact
 #invertebrate predator plot
 
  p6 <- predatorsumm %>% 
+  mutate(SpeciesCode = case_when(SpeciesCode == "Belspp" ~ "Giant Water Bug",
+                                 SpeciesCode == "Profal" ~ "Crayfish",
+                                 SpeciesCode == "Sirlac" ~ "Greater Siren")) |> 
   ggplot(aes(y = count, x = Season))+
   geom_bar(aes(fill = SpeciesCode), stat = "identity", color = "black",
            position = position_dodge())+
   theme_classic()+
-  scale_fill_manual(values = c("darkolivegreen","steelblue4","tan4"),
-                    labels = c("Giant Water Bug", "Crayfish", "Greater Siren"))+
+  scale_fill_manual(values = c("steelblue4","orchid4","tan4"),
+                    labels = c("Crayfish","Giant Water Bug","Greater Siren"))+
   theme(legend.title = element_blank(),
         legend.position = c(.75,.8))+
   labs(y = "Predator Abundance (n)",
@@ -173,25 +176,25 @@ img_siren <- readJPEG(here("Pomacea/Isocline_manuscript/pics","sirencut.jpg"),na
 #put images on plot
 
 patchinvert <- p6 +
-  inset_element(p = img_cray,
-                left = 0.65,
-                bottom = 0.25,
-                right = 0.79,
+   inset_element(p = img_cray,
+                 left = 0.50,
+                 bottom = 0.25,
+                right = 0.63,
                 top = 0.37)+
   inset_element(p = img_cray,
-                left = 0.20,
+                left = 0.07,
                 bottom = .97,
-                right = 0.34,
+                right = 0.20,
                 top = 1.09)+
   inset_element(p = img_belo,
-                left = 0.07,
+                left = 0.21,
                 bottom = .36,
-                right = 0.20,
+                right = 0.34,
                 top = .51)+
   inset_element(p = img_belo,
-                left = 0.52,
+                left = 0.66,
                 bottom = 0.18,
-                right = 0.65,
+                right = 0.79,
                 top = 0.33)+
   inset_element(p = img_siren,
                 left = 0.81,
@@ -274,7 +277,7 @@ p_percap <- tibble(Season = c("dry", "dry", "dry", "wet", "wet", "wet"),
   geom_bar(aes(fill = spp), stat = "identity", color = "black",
            position = position_dodge())+
   theme_classic()+
-  scale_fill_manual(values = c("steelblue4","darkolivegreen", "tan4"),
+  scale_fill_manual(values = c("steelblue4","orchid4", "tan4"),
                     labels = c("Crayfish", "Giant Water Bug", "Greater Siren"))+
   theme(legend.title = element_blank(),
         legend.position = c(.25,.85),
@@ -334,4 +337,8 @@ patch.predator
 #save to the out folder
 ggsave(here("Pomacea/Isocline_manuscript/out","fig4_artifact.png"),
        patch.predator, device = ragg::agg_png,
+       units = "in", width = 8, height = 9)
+
+ggsave(here("Pomacea/Isocline_manuscript/out/pdf","fig4_artifact.pdf"),
+       patch.predator, device = "pdf",
        units = "in", width = 8, height = 9)

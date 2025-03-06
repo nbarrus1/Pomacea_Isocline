@@ -8,6 +8,7 @@
 library(lme4)
 library(lmerTest)
 library(MuMIn)
+library(patchwork)
 
 #-----------------------------
 ####read in the threshold data from script 002####
@@ -157,7 +158,7 @@ b1 <- 0.0026002-0.0022298
 
 #combine all estimates into one
 
-k <- tibble(Site = c("LILA","LILA","WCA02","WCA02","WCA03"),
+k <- tibble(Site = c("LILA","LILA","Site 2","Site 2","Site 3"),
              Season = c("dry","wet","dry","wet","wet"),
              k = c(LILA_k$k_ave,0.058528084,0.048985688),
              k_upp =as.double(c(LILA_k$upp, 0.059445,0.050099)),
@@ -180,13 +181,16 @@ CJS <- tetherdata %>%
          CJS = sum.fate/tot,
          upp = (CJS + (1.96 * sqrt(((1 - CJS)*CJS)/(tot + 4)))),
          low = (CJS - (1.96 * sqrt(((1 - CJS)*CJS)/(tot + 4)))),
-         predator = "with") %>% 
+         predator = "with",
+         Site = case_when(Site == "WCA03"~"Site 3",
+                          Site == "WCA02"~"Site 2",
+                          Site == "LILA"~"LILA")) %>% 
   filter(fate == "s") %>% 
   dplyr::select(-fate,-sum.fate,-tot)
 
 
 
-#####CJS w/o predators####
+#####CJS w/o predators#### 
 
 CJS_encl <- enclosuredata %>% 
   group_by(season) %>% 
@@ -249,17 +253,21 @@ p20 <- isodat_M2 %>%
   geom_smooth(color = "#999999", size = 1.5, linetype = 1, se = F)+
   #geom_smooth(data = isodat_opt, color = "#999999", linewidth = 1.5, linetype = 1, se = F)+
   geom_smooth(data = isodat_M1, color = "black", linewidth = 1.5, linetype = 1, se = F)+
-  geom_pointrange(data = parameter, aes(x = CJS, y = k, ymin = k_low, ymax = k_upp,
+  geom_pointrange(data = parameter |> filter(Site != "Site 3") |> filter(predator == "with"),
+                    aes(x = CJS, y = k, ymin = k_low, ymax = k_upp,
                                         color = season, shape = Site), show.legend = F)+
-  geom_pointrange(data = parameter, aes(x = CJS, y = k, xmin = CJS_low, xmax = CJS_upp,
+  geom_pointrange(data = parameter |> filter(Site != "Site 3")|> filter(predator == "with"),
+                  aes(x = CJS, y = k, xmin = CJS_low, xmax = CJS_upp,
                                        color = season, shape = Site),show.legend = F)+
-  geom_point(data = parameter, aes(x = CJS, y = k,color = season, shape = Site), size = 3)+
+  geom_point(data = parameter |> filter(Site != "Site 3")|> filter(predator == "with"),
+             aes(x = CJS, y = k,color = season, shape = Site), size = 3)+
   theme_classic()+
   coord_flip()+
   scale_color_manual(values = c("darkolivegreen","tan4","steelblue4"))+
-  scale_y_continuous(breaks = c(0.01,0.03,0.05,0.07,0.09))+
-  scale_x_continuous(limits = c(0.65,1.04), breaks = c(0.65,0.7,0.75,0.8,0.85,0.9,0.95,1.00))+
-  labs(x ="Cumulative Juvenile Survival", y ="Growth (k)")+
+  scale_y_continuous(breaks = c(0.015,0.03,0.045,0.06,0.075), expand = c(0,0))+
+  scale_x_continuous(limits = c(0.69,1.04), breaks = c(0.75,0.8,0.85,0.9,0.95,1.00),
+                     expand = c(0,0))+
+  labs(x ="Survival (< 10 mm SL)", y ="Growth (k)")+
   annotate(geom = "text", x = 0.73, y = 0.018, label = "Declining", size = 8)+
   annotate(geom = "text", x = 0.925, y = 0.075, label = "Increasing", size = 8)+
   #annotate(geom = "text", x = 0.993, y = 0.05, label = "(model parameters)",
@@ -280,9 +288,9 @@ p21 <- isodat_M2 %>%
   ggplot(aes(x = Sint, y  = as.numeric(k)))+
   # geom_point(aes(x = (0.987*.987), y = 0.05), size = 3, shape = 21, color = "black",
   #            fill = "dark red")+
-  geom_smooth(color = "#999999", size = 1.5, linetype = 1, se = F)+
+  geom_smooth(color = "black", size = 1.5, linetype = 1, se = F)+
   #geom_smooth(data = isodat_opt, color = "#999999", linewidth = 1.5, linetype = 1, se = F)+
-  geom_smooth(data = isodat_M1, color = "black", linewidth = 1.5, linetype = 1, se = F)+
+  #geom_smooth(data = isodat_M1, color = "black", linewidth = 1.5, linetype = 1, se = F)+
   #geom_pointrange(data = parameter, aes(x = CJS, y = k, ymin = k_low, ymax = k_upp,
  #                                       color = season, shape = Site), show.legend = F)+
   #geom_pointrange(data = parameter, aes(x = CJS, y = k, xmin = CJS_low, xmax = CJS_upp,
@@ -291,11 +299,12 @@ p21 <- isodat_M2 %>%
   theme_classic()+
   coord_flip()+
   scale_color_manual(values = c("darkolivegreen","tan4","steelblue4"))+
-  scale_y_continuous(breaks = c(0.01,0.03,0.05,0.07,0.09))+
-  scale_x_continuous(limits = c(0.65,1.04), breaks = c(0.65,0.7,0.75,0.8,0.85,0.9,0.95,1.00))+
-  labs(x ="Cumulative Juvenile Survival", y ="Growth (k)")+
-  annotate(geom = "text", x = 0.73, y = 0.03, label = "Declining", size = 8)+
-  annotate(geom = "text", x = 0.95, y = 0.072, label = "Increasing", size = 8)+
+  scale_y_continuous(breaks = c(0.015,0.03,0.045,0.06,0.075), expand = c(0,0))+
+  scale_x_continuous(limits = c(0.70,1.04), breaks = c(0.75,0.8,0.85,0.9,0.95,1.00),
+                     expand = c(0,0))+
+  labs(x ="Survival (< 10 mm SL)", y ="Growth (k)")+
+  annotate(geom = "text", x = 0.75, y = 0.03, label = "Declining", size = 5)+
+  annotate(geom = "text", x = 0.95, y = 0.072, label = "Increasing", size = 5)+
   #annotate(geom = "text", x = 0.993, y = 0.05, label = "(model parameters)",
   #       size = 3, color = "dark red")+
   #annotate(geom = "text", x = 1.02, y = 0.030, label = "without predators")+
@@ -306,21 +315,27 @@ p21 <- isodat_M2 %>%
         axis.title = element_text(size = 12, face = "bold"),
         axis.text = element_text(size = 12))
 
-
 #environmental data plot
 
 p22 <- environment_data %>% 
   gather(Depth_Opt,Depth_M2_cm, Depth_M1_cm, key = "scenario", value = "Depth_cm") %>% 
   filter(scenario != "Depth_Opt") |> 
   ggplot(aes(x = Date, y = Depth_cm, color = scenario))+
+  geom_rect(aes(xmin = as.POSIXct(as_date("2020-02-01")),
+                xmax = as.POSIXct(as_date("2020-08-31")),
+                ymin = -Inf, ymax = +Inf), fill = "tan", 
+            show.legend = F,  color = "tan", alpha = 0.01)+
   geom_line(linewidth = 1.5, linetype = 1, show.legend = T)+
   labs(y = "Depth (cm)")+
   theme_classic()+
   scale_color_manual(values = c("black","#999999"),
                      labels = c("Poor Reproduction","Good Reproduction"))+
-  theme(legend.position = c(0.33,0.85),
+  theme(legend.position = c(0.38,0.85),
+        legend.key = element_rect(fill = NA),
+        #legend.position = "top",
+        legend.background = element_rect(fill = NA),
         legend.title = element_blank(),
-        legend.text = element_text(size = 12),
+        legend.text = element_text(size = 10),
         axis.text = element_text(size = 12),
         axis.text.x = element_text(angle = 60, vjust = 0.5),
         axis.title = element_text(size = 14, face = "bold"))
@@ -347,6 +362,85 @@ ggsave(here("Pomacea/Isocline_manuscript/out","fig5_isocline.pdf"),
        p20, device = pdf,
        units = "in", width = 8, height = 8)
 
-ggsave(here("Pomacea/Isocline_manuscript/out","fig2_hydrologic.png"),
-       patch.isocline.annotate, device = png,
-       units = "in", width = 9, height = 4)
+ggsave(here("Pomacea/Isocline_manuscript/out","figA3-1_hydrologic.png"),
+       p22, device = png,
+       units = "in", width = 5, height = 4)
+
+
+
+ggsave(here("Pomacea/Isocline_manuscript/out/pdf","fig2_isoclinealone.pdf"),
+       p21, device = "pdf",
+       units = "in", width = 5, height = 4)
+
+####optimized reproduction
+
+p24 <- isodat_M2 %>% 
+  ggplot(aes(x = Sint, y  = as.numeric(k)))+
+  # geom_point(aes(x = (0.987*.987), y = 0.05), size = 3, shape = 21, color = "black",
+  #            fill = "dark red")+
+  geom_smooth(color = "#333333", size = 1.5, linetype = 1, se = F)+
+  geom_smooth(data = isodat_opt, color = "#999999", linewidth = 1.5, linetype = 1, se = F)+
+  geom_smooth(data = isodat_M1, color = "black", linewidth = 1.5, linetype = 1, se = F)+
+  geom_pointrange(data = parameter, aes(x = CJS, y = k, ymin = k_low, ymax = k_upp,
+                                        color = season, shape = Site), show.legend = F)+
+  geom_pointrange(data = parameter, aes(x = CJS, y = k, xmin = CJS_low, xmax = CJS_upp,
+                                        color = season, shape = Site),show.legend = F)+
+  geom_point(data = parameter, aes(x = CJS, y = k,color = season, shape = Site), size = 3)+
+  theme_classic()+
+  coord_flip()+
+  scale_color_manual(values = c("darkolivegreen","tan4","steelblue4"))+
+  scale_y_continuous(breaks = c(0.015,0.03,0.045,0.06,0.075), expand = c(0,0))+
+  scale_x_continuous(limits = c(0.69,1.04), breaks = c(0.75,0.8,0.85,0.9,0.95,1.00),
+                     expand = c(0,0))+
+  labs(x ="Cumulative Juvenile Survival", y ="Growth (k)")+
+  annotate(geom = "text", x = 0.73, y = 0.018, label = "Declining", size = 8)+
+  annotate(geom = "text", x = 0.925, y = 0.075, label = "Increasing", size = 8)+
+  #annotate(geom = "text", x = 0.993, y = 0.05, label = "(model parameters)",
+  #       size = 3, color = "dark red")+
+  #annotate(geom = "text", x = 1.02, y = 0.030, label = "without predators")+
+  #annotate(geom = "text", x = 0.82, y = 0.047, label = "with")+
+  #annotate(geom = "text", x = 0.80, y = 0.047, label = "predators")+
+  theme(legend.position = c(0.52,0.13),
+        legend.box = "horizontal",
+        axis.title = element_text(size = 24),
+        axis.text = element_text(size = 20))
+
+
+ggsave(here("Pomacea/Isocline_manuscript/out","FigS5_isoclinefull.png"),
+       p24, device = png,
+       units = "in", width = 8, height = 8)
+
+p25 <- isodat_M2 %>% 
+  ggplot(aes(x = Sint, y  = as.numeric(k)))+
+  # geom_point(aes(x = (0.987*.987), y = 0.05), size = 3, shape = 21, color = "black",
+  #            fill = "dark red")+
+  geom_smooth(color = "#666666", size = 1.5, linetype = 1, se = F)+
+  #geom_smooth(data = isodat_opt, color = "#999999", linewidth = 1.5, linetype = 1, se = F)+
+  geom_smooth(data = isodat_M1, color = "black", linewidth = 1.5, linetype = 1, se = F)+
+  #geom_pointrange(data = parameter, aes(x = CJS, y = k, ymin = k_low, ymax = k_upp,
+  #                                       color = season, shape = Site), show.legend = F)+
+  #geom_pointrange(data = parameter, aes(x = CJS, y = k, xmin = CJS_low, xmax = CJS_upp,
+  #                                      color = season, shape = Site),show.legend = F)+
+  #geom_point(data = parameter, aes(x = CJS, y = k,color = season, shape = Site), size = 3)+
+  theme_classic()+
+  coord_flip()+
+  scale_color_manual(values = c("darkolivegreen","tan4","steelblue4"))+
+  scale_y_continuous(breaks = c(0.015,0.03,0.045,0.06,0.075), expand = c(0,0))+
+  scale_x_continuous(limits = c(0.70,1.04), breaks = c(0.75,0.8,0.85,0.9,0.95,1.00),
+                     expand = c(0,0))+
+  labs(x ="Survival (< 10 mm SL)", y ="Growth (k)")+
+  annotate(geom = "text", x = 0.75, y = 0.03, label = "Declining", size = 5)+
+  annotate(geom = "text", x = 0.95, y = 0.072, label = "Increasing", size = 5)+
+  #annotate(geom = "text", x = 0.993, y = 0.05, label = "(model parameters)",
+  #       size = 3, color = "dark red")+
+  #annotate(geom = "text", x = 1.02, y = 0.030, label = "without predators")+
+  #annotate(geom = "text", x = 0.82, y = 0.047, label = "with")+
+  #annotate(geom = "text", x = 0.80, y = 0.047, label = "predators")+
+  theme(legend.position = c(0.52,0.13),
+        legend.box = "horizontal",
+        axis.title = element_text(size = 12, face = "bold"),
+        axis.text = element_text(size = 12))
+
+ggsave(here("Pomacea/Isocline_manuscript/out","fig2_isoclineconditions.png"),
+       p25, device = png,
+       units = "in", width = 5, height = 4)

@@ -98,10 +98,12 @@ p3 <- tetherdata %>%
               method.args = list(family=binomial), show.legend = F)+
   geom_smooth(method="glm", se=T, fullrange=TRUE, 
               method.args = list(family=binomial), fill = NA)+
-  coord_cartesian(ylim =  c(0.55, 1.00))+
+  coord_cartesian(ylim =  c(0.55, 1.00),
+                  xlim = c(3,30))+
   labs(y = "Daily Survival Probability",
        x = "Shell Length (mm)")+
-  annotate(geom = "text", x = 5.5, y = 1, label = "A)", size = 6)+
+  scale_x_continuous(breaks = c(3,10,20,30))+
+  #annotate(geom = "text", x = 5.5, y = 1, label = "A)", size = 6)+
   scale_color_manual(values = c("tan4","steelblue4"))+
   scale_fill_manual(values = c("tan","steelblue1"))+
   theme(plot.margin = unit(c(0,0,0,0), "cm"),
@@ -150,22 +152,17 @@ AAAAAAAAAAAAAAAAAAAA
 #BBBBBBBBBBBBBBBBBB#
 #BBBBBBBBBBBBBBBBBB#
 ####################
-#CCCCCCCCCCCCCCCCCC#
-#CCCCCCCCCCCCCCCCCC#
-#CCCCCCCCCCCCCCCCCC#
-#CCCCCCCCCCCCCCCCCC#
-#CCCCCCCCCCCCCCCCCC#
-#CCCCCCCCCCCCCCCCCC#
-#CCCCCCCCCCCCCCCCCC#
-#CCCCCCCCCCCCCCCCCC#
-#CCCCCCCCCCCCCCCCCC#
 "
 
-patch.survival <- (p1+p3+p4)+plot_layout(design = surv_layout)
+patch.survival <- (p1+p3)+plot_layout(design = surv_layout)
 
 ggsave(here("Pomacea/Isocline_manuscript/out","fig3_tethering.png"),
        patch.survival, device = ragg::agg_png,
-       units = "in", width = 4, height = 8)
+       units = "in", width = 4, height = 6)
+
+ggsave(here("Pomacea/Isocline_manuscript/out/pdf","fig3_tethering.pdf"),
+       patch.survival, device = "pdf",
+       units = "in", width = 4, height = 6)
 
 #--------------------------------------------------------------------------
 ####logistic regression results just LILA#####
