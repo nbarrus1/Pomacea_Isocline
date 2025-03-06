@@ -1,4 +1,4 @@
-This repository contains the code, output, manuscript drafts and data associated with the manuscript titled "Interpreting field measurments of juvenile growth and survival rates with population growth isocliens."
+This repository contains the code, output, manuscript drafts and data associated with the manuscript titled "Interpreting field measurments of juvenile growth and survival rates with population growth isoclines."
 
 Authors:
 Nathan T. Barrus*: ORCID: 0000-0001-7503-3120
