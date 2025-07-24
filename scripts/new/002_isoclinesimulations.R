@@ -207,7 +207,7 @@ sum(N2)                              #populaiton size after day 2 again no repro
 
 #####load in environmental data #####
 
-environment_data <- read_xlsx(here("Pomacea/Isocline_manuscript/data","EnvrionmentalData_M2&m1_1-1-20--12-31-20.xlsx"), sheet = 2)   
+environment_data <- read_xlsx(here("data","EnvrionmentalData_M2&m1_1-1-20--12-31-20.xlsx"), sheet = 2)   
 environment_data
 #IT reads the dates into the file as dates as well!! 
 #convert our depths to cm, let also create a variable called mon for the month that each day 
@@ -762,4 +762,4 @@ for(j in 1:length(threshold_data[,1])) {
 
 threshold_data <- as_tibble(threshold_data)
 
-write_csv(threshold_data, file = here("Pomacea/Isocline_manuscript/out","threshold_data.csv"))
+write_csv(threshold_data, file = here("out","threshold_data.csv"))

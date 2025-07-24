@@ -65,7 +65,7 @@ tether.summ
 #####figure one plot#####
 #-------------------------------------------------------------
 
-trans_img <- readJPEG(here("Pomacea/Isocline_manuscript/pics","TetheringTransect2.jpg"))
+trans_img <- readJPEG(here("pics","TetheringTransect2.jpg"))
 
 p1 <- ggplot(iris, aes(Species, Sepal.Length))+
   background_image(trans_img)+
@@ -156,11 +156,12 @@ AAAAAAAAAAAAAAAAAAAA
 
 patch.survival <- (p1+p3)+plot_layout(design = surv_layout)
 
-ggsave(here("Pomacea/Isocline_manuscript/out","fig3_tethering.png"),
+
+ggsave(here("out","Appendix2-FigS2_tethering.png"),
        patch.survival, device = ragg::agg_png,
        units = "in", width = 4, height = 6)
 
-ggsave(here("Pomacea/Isocline_manuscript/out/pdf","fig3_tethering.pdf"),
+ggsave(here("out","Appendix2-FigS2_tethering.pdf"),
        patch.survival, device = "pdf",
        units = "in", width = 4, height = 6)
 
@@ -243,7 +244,7 @@ log.AIC <- log.AIC %>%
   dplyr::select(-model.num)
 
          
-write_csv(log.AIC, file = here("Pomacea/Isocline_manuscript/out","table1_AICc.csv"))
+write_csv(log.AIC, file = here("out","Appendix2-tableS1_AICc.csv"))
 
 summary(logregfit10)
 summary(logregfit11)

@@ -272,6 +272,10 @@ patch.growth.annotate <- patch.growth+
   
 #save the plots
 
-ggsave(here("Pomacea/Isocline_manuscript/out","fig4_growth.png"),
+ggsave(here("out","Appendix3-figS2_growth.png"),
        patch.growth.annotate, device = ragg::agg_png,
+       units = "in", width = 8, height = 4)
+
+ggsave(here("out","Appendix3-figS2_growth.pdf"),
+       patch.growth.annotate, device = "pdf",
        units = "in", width = 8, height = 4)

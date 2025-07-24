@@ -170,8 +170,10 @@ patch.diet.annotate <- patch.diet+
 
 #save to out folder
 
-ggsave(here("Pomacea/Isocline_manuscript/out","figS1_diet.png"),
+ggsave(here("out","Appendix2-figS3_diet.png"),
        patch.diet.annotate, device = ragg::agg_png,
        units = "in", width = 9, height = 12)
 
-
+ggsave(here("out","Appendix2-figS3_diet.pdf"),
+       patch.diet.annotate, device = "pdf",
+       units = "in", width = 9, height = 12)

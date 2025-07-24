@@ -87,9 +87,9 @@ predatorsumm <- invpredatorsumm |>
 
 #artifact images
 
-img_crush <- readJPEG(here("Pomacea/Isocline_manuscript/pics","crushed_cutout.jpg"), native = T)
-img_empty <- readJPEG(here("Pomacea/Isocline_manuscript/pics","emptyshell.jpg"), native = T)
-img_miss <- readJPEG(here("Pomacea/Isocline_manuscript/pics","missing.jpg"),native = T)
+img_crush <- readJPEG(here("pics","crushed_cutout.jpg"), native = T)
+img_empty <- readJPEG(here("pics","emptyshell.jpg"), native = T)
+img_miss <- readJPEG(here("pics","missing.jpg"),native = T)
 
 #artifact data
 
@@ -169,9 +169,9 @@ patch.artifact
 
 #invert images
  
-img_cray <- readJPEG(here("Pomacea/Isocline_manuscript/pics","crayfishcut.jpg"),native = T)
-img_belo <- readJPEG(here("Pomacea/Isocline_manuscript/pics","belostomacut.jpg"),native = T)
-img_siren <- readJPEG(here("Pomacea/Isocline_manuscript/pics","sirencut.jpg"),native = T)
+img_cray <- readJPEG(here("pics","crayfishcut.jpg"),native = T)
+img_belo <- readJPEG(here("pics","belostomacut.jpg"),native = T)
+img_siren <- readJPEG(here("pics","sirencut.jpg"),native = T)
 
 #put images on plot
 
@@ -335,10 +335,10 @@ patch.predator
 
 
 #save to the out folder
-ggsave(here("Pomacea/Isocline_manuscript/out","fig4_artifact.png"),
+ggsave(here("out","Appendix2-figS4_artifact.png"),
        patch.predator, device = ragg::agg_png,
        units = "in", width = 8, height = 9)
 
-ggsave(here("Pomacea/Isocline_manuscript/out/pdf","fig4_artifact.pdf"),
+ggsave(here("out","Appendix2-figS4_artifact.pdf"),
        patch.predator, device = "pdf",
        units = "in", width = 8, height = 9)

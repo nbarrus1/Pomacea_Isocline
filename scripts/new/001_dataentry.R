@@ -17,9 +17,9 @@ library(lubridate)
 #--------------------------------------------
 
 #####load in data####
-tetherdata.raw <- read_excel(here("Pomacea/Isocline_manuscript/data","tetheringdata.xlsx"), sheet = 4)
+tetherdata.raw <- read_excel(here("data","tetheringdata.xlsx"), sheet = 4)
 
-lengthcodes <- read_excel(here("Pomacea/Isocline_manuscript/data","tetheringdata.xlsx"), sheet = 2)      
+lengthcodes <- read_excel(here("data","tetheringdata.xlsx"), sheet = 2)      
 
 tetherdata <- tetherdata.raw %>% 
   left_join(lengthcodes, by = c("season", "box", "bin", "box.id","box.day")) %>% 
@@ -32,7 +32,7 @@ rm(list = c("lengthcodes","tetherdata.raw"))
 #####predator data####
 #--------------------------------------------
 
-predatordata <- read_excel(here("Pomacea/Isocline_manuscript/data","PredatorDiets_v1.5.xls"), sheet = 3,
+predatordata <- read_excel(here("data","PredatorDiets_v1.5.xls"), sheet = 3,
                            na = "UNK") %>% 
   mutate(juvcray = if_else(SpeciesCode == "Profal" & StandLen_mm < 14, true = 0,
                            false = 1),
@@ -45,7 +45,7 @@ predatordata <- read_excel(here("Pomacea/Isocline_manuscript/data","PredatorDiet
 
 #####load data####
 
-dietdata.raw <- read_excel(here("Pomacea/Isocline_manuscript/data","PredatorDiets_v1.5.xls"), sheet = 2)
+dietdata.raw <- read_excel(here("data","PredatorDiets_v1.5.xls"), sheet = 2)
 
 ###clean up the data####
 
@@ -68,11 +68,11 @@ rm(list = "dietdata.raw")
 ####load data####
 
 #growthdata
-growthdata <- read_excel(here("Pomacea/Isocline_manuscript/data","Growth_DataSheet_v5.xlsx"), sheet = 2)
+growthdata <- read_excel(here("data","Growth_DataSheet_v5.xlsx"), sheet = 2)
 #treatment codes
-treatmentcode <- read_excel(here("Pomacea/Isocline_manuscript/data","Growth_DataSheet_v5.xlsx"), sheet = 4)
+treatmentcode <- read_excel(here("data","Growth_DataSheet_v5.xlsx"), sheet = 4)
 #maculata length
-maclen <- read_excel(here("Pomacea/Isocline_manuscript/data","Growth_DataSheet_v5.xlsx"), sheet = 5) %>% 
+maclen <- read_excel(here("data","Growth_DataSheet_v5.xlsx"), sheet = 5) %>% 
   group_by(Cage) %>% 
   summarise(ave.maclength = mean(mac_size_mm, na.rm = T))
 
@@ -98,13 +98,13 @@ rm(list = c("maclen","treatmentcode"))
 
 ###cage experiment total phosphorus
 
-TP_data <- read_csv(here("Pomacea/Isocline_manuscript/data","table_cagecharact.csv"))
+TP_data <- read_csv(here("data","table_cagecharact.csv"))
 
 #---------------------------------------------
 ####predator free survival####
 #---------------------------------------------
 
-predatorfree <- read_excel(here("Pomacea/Isocline_manuscript/data","predatorfree_survival.xlsx"), sheet = 2)
+predatorfree <- read_excel(here("data","predatorfree_survival.xlsx"), sheet = 2)
 
 #--------------------------------------------
 ####Water and Air Temps####
@@ -112,13 +112,13 @@ predatorfree <- read_excel(here("Pomacea/Isocline_manuscript/data","predatorfree
 
 #read in water temperatures add cell names as grouping variables
 
-WATERTEMP_M2 <- read_csv(here("Pomacea/Isocline_manuscript/data", "HOBO_20423783_M2_12-17-2020--8-16-2021.csv"), skip = 1) %>%  #read in the M2 data
+WATERTEMP_M2 <- read_csv(here("data", "HOBO_20423783_M2_12-17-2020--8-16-2021.csv"), skip = 1) %>%  #read in the M2 data
   mutate(type = "water_M2")                                                                  #name as M2 in new variable called "type"
 
-WATERTEMP_M3 <- read_csv(here("Pomacea/Isocline_manuscript/data", "HOBO_20423785_M3_12-17-2020--8-16-2021.csv"), skip = 1) %>%  #read in the M3 data
+WATERTEMP_M3 <- read_csv(here("data", "HOBO_20423785_M3_12-17-2020--8-16-2021.csv"), skip = 1) %>%  #read in the M3 data
   mutate(type = "water_M3")                                                                  #name as M3 in new variable called "type"
 
-AIRTEMP <- read_csv(here("Pomacea/Isocline_manuscript/data","DBHYDRO_airtemp_12-18-2020--8-11-2021.csv"), skip = 3) %>%  #read in the air temp data
+AIRTEMP <- read_csv(here("data","DBHYDRO_airtemp_12-18-2020--8-11-2021.csv"), skip = 3) %>%  #read in the air temp data
   rename(date.time =`Daily Date`,                                 #change daily date to date.time                 
          temp.c = `Data Value`) %>%                               #change data value to air.temp.c
   dplyr::select(date.time,temp.c) %>%                                #only use these variables
@@ -160,15 +160,15 @@ rm(list = c("AIRTEMP","WATERTEMP_M2","WATERTEMP_M3"))
 ######WCA Periphyton TP####
 #----------------------------------------
 
-WCA_TP <- read_excel(here("Pomacea/Isocline_manuscript/data","20221014_TPData_DornLab.xlsx")) %>% 
+WCA_TP <- read_excel(here("data","20221014_TPData_DornLab.xlsx")) %>% 
   mutate(Site = c(rep("WCA2", times = 2),
                   rep("WCA3", times = 2)))
 
 #data to create regression to predict growth rates
 
-growthexpdata <- read_excel(here("Pomacea/Isocline_manuscript/data","FieldGrowthExperiments-2019-2020.xlsx"))
+growthexpdata <- read_excel(here("data","FieldGrowthExperiments-2019-2020.xlsx"))
 
-nutrientdata <- read_excel(here("Pomacea/Isocline_manuscript/data","RawTP_2019&2020.xlsx"), sheet = 5)
+nutrientdata <- read_excel(here("data","RawTP_2019&2020.xlsx"), sheet = 5)
 
 growth.summ <- growthexpdata %>% 
   group_by(year,cell,treatment,cage,species) %>% 
@@ -234,7 +234,7 @@ growth.summ <- growth.summ %>%
 ####predator free survival####
 #--------------------------
 
-enclosuredata <- read_excel(here("Pomacea/Isocline_manuscript/data","predatorfree_survival.xlsx"), sheet = 2)
+enclosuredata <- read_excel(here("data","predatorfree_survival.xlsx"), sheet = 2)
 
 
 ####--------------------------
@@ -254,11 +254,11 @@ WCA_correction_temp <- tetherdata %>%
   mutate(date = mdy("7/18/2022")) %>% 
   rename(measured_depth = depth)
 
-dat2010_2020 <- read_table(here("Pomacea/Isocline_manuscript/data","waterdepths_eden_isocline_2010-2020.txt"),
+dat2010_2020 <- read_table(here("data","waterdepths_eden_isocline_2010-2020.txt"),
                            skip = 5, col_names = c("date","WCA02","WCA03")) %>% 
   gather(WCA02,WCA03, key = "wetland", value = "eden_depth")
 
-dat2021_2022 <-  read_table(here("Pomacea/Isocline_manuscript/data","waterdepths_eden_isocline_2021-2022.txt"),
+dat2021_2022 <-  read_table(here("data","waterdepths_eden_isocline_2021-2022.txt"),
                             skip = 5, col_names = c("date","WCA02","WCA03"))  %>% 
   gather(WCA02,WCA03, key = "wetland", value = "eden_depth") 
 
@@ -290,7 +290,7 @@ rm(list = c("dat2010_2020","dat2021_2022","WCA_correction_temp"))
 ###please note that these temps are taken from the meterologic station in WCA3A
 ###the name is 3AS3WX lat (255106.215) long (804558.543) dbkey (LA373)
 
-WCA_temp_raw <- read_csv(here("Pomacea/Isocline_manuscript/data","WCA3A_temp.csv"),
+WCA_temp_raw <- read_csv(here("data","WCA3A_temp.csv"),
                            skip = 3) %>% 
   rename(date = `Daily Date`,
          temp = `Data Value`) %>% 

@@ -14,13 +14,13 @@ library(patchwork)
 ####read in the threshold data from script 002####
 #----------------------------
 
-threshold.dataM2 <- read_csv(here("Pomacea/Isocline_manuscript/data","threshold100_data_2size.csv"))
-threshold.dataM1 <- read_csv(here("Pomacea/Isocline_manuscript/data","threshold100_deep_data_2size.csv"))
-threshold.dataopt<- read_csv(here("Pomacea/Isocline_manuscript/data","threshold100_optimal_data_2sizes.csv"))
+threshold.dataM2 <- read_csv(here("data","threshold100_data_2size.csv"))
+threshold.dataM1 <- read_csv(here("data","threshold100_deep_data_2size.csv"))
+threshold.dataopt<- read_csv(here("data","threshold100_optimal_data_2sizes.csv"))
 
 #####load in environmental used to create isocline data #####
 
-environment_data <- read_xlsx(here("Pomacea/Isocline_manuscript/data","EnvrionmentalData_M2&M1_1-1-20--12-31-20.xlsx"),sheet = 2)   
+environment_data <- read_xlsx(here("data","EnvrionmentalData_M2&M1_1-1-20--12-31-20.xlsx"),sheet = 2)   
 
 environment_data <- environment_data %>% 
   mutate(Depth_M1_cm = (Depth_M1_ft - 13.5)*12*2.54,     #convert to cm above deep slough depth
@@ -358,19 +358,22 @@ patch.isocline.annotate<- patch.isocline +
 
 patch.isocline.annotate
 
-ggsave(here("Pomacea/Isocline_manuscript/out","fig5_isocline.pdf"),
+ggsave(here("out","fig1_isocline.pdf"),
        p20, device = pdf,
        units = "in", width = 8, height = 8)
 
-ggsave(here("Pomacea/Isocline_manuscript/out","figA3-1_hydrologic.png"),
+ggsave(here("out","fig1_isocline.png"),
+       p20, device = png,
+       units = "in", width = 8, height = 8)
+
+ggsave(here("out","Appendix3-figS1_hydrologic.png"),
        p22, device = png,
        units = "in", width = 5, height = 4)
 
+ggsave(here("out","Appendix3-figS1_hydrologic.pdf"),
+       p20, device = pdf,
+       units = "in", width = 8, height = 8)
 
-
-ggsave(here("Pomacea/Isocline_manuscript/out/pdf","fig2_isoclinealone.pdf"),
-       p21, device = "pdf",
-       units = "in", width = 5, height = 4)
 
 ####optimized reproduction
 
@@ -406,8 +409,12 @@ p24 <- isodat_M2 %>%
         axis.text = element_text(size = 20))
 
 
-ggsave(here("Pomacea/Isocline_manuscript/out","FigS5_isoclinefull.png"),
+ggsave(here("out","Appendix1-FigS3_isoclinefull.png"),
        p24, device = png,
+       units = "in", width = 8, height = 8)
+
+ggsave(here("out","Appendix1-FigS3_isoclinefull.pdf"),
+       p24, device = pdf,
        units = "in", width = 8, height = 8)
 
 p25 <- isodat_M2 %>% 
@@ -441,6 +448,10 @@ p25 <- isodat_M2 %>%
         axis.title = element_text(size = 12, face = "bold"),
         axis.text = element_text(size = 12))
 
-ggsave(here("Pomacea/Isocline_manuscript/out","fig2_isoclineconditions.png"),
+ggsave(here("out","Appendix1-figS2_isoclineconditions.png"),
        p25, device = png,
+       units = "in", width = 5, height = 4)
+
+ggsave(here("out","Appendix1-figS2_isoclineconditions.pdf"),
+       p25, device = pdf,
        units = "in", width = 5, height = 4)
