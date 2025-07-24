@@ -2,7 +2,7 @@ This repository contains the code, output, manuscript drafts and data associated
 
 Authors:
 Nathan T. Barrus*: ORCID: 0000-0001-7503-3120
-Mark I. Cook,
+Mark I. Cook: 0009-0002-4206-7548,
 and Nathan J. Dorn: ORCID: 0000-0001-5516-0253
 
 *Repository owner
