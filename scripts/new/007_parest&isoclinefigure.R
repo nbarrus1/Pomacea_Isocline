@@ -9,6 +9,8 @@ library(lme4)
 library(lmerTest)
 library(MuMIn)
 library(patchwork)
+library(tidyverse)
+library(here)
 
 #-----------------------------
 ####read in the threshold data from script 002####
@@ -381,21 +383,25 @@ p24 <- isodat_M2 %>%
   ggplot(aes(x = Sint, y  = as.numeric(k)))+
   # geom_point(aes(x = (0.987*.987), y = 0.05), size = 3, shape = 21, color = "black",
   #            fill = "dark red")+
-  geom_smooth(color = "#333333", size = 1.5, linetype = 1, se = F)+
+  geom_smooth(color = "#666666", size = 1.5, linetype = 1, se = F)+
   geom_smooth(data = isodat_opt, color = "#999999", linewidth = 1.5, linetype = 1, se = F)+
   geom_smooth(data = isodat_M1, color = "black", linewidth = 1.5, linetype = 1, se = F)+
   geom_pointrange(data = parameter, aes(x = CJS, y = k, ymin = k_low, ymax = k_upp,
-                                        color = season, shape = Site), show.legend = F)+
+                                         shape = Site), show.legend = F)+
   geom_pointrange(data = parameter, aes(x = CJS, y = k, xmin = CJS_low, xmax = CJS_upp,
-                                        color = season, shape = Site),show.legend = F)+
-  geom_point(data = parameter, aes(x = CJS, y = k,color = season, shape = Site), size = 3)+
+                                         shape = Site),show.legend = F)+
+  geom_point(data = parameter, aes(x = CJS, y = k, shape = Site, fill = season), size = 6)+
   theme_classic()+
   coord_flip()+
-  scale_color_manual(values = c("darkolivegreen","tan4","steelblue4"))+
+  #scale_color_manual(values = c("white","tan4","steelblue4"),
+  #                   labels = c("Average","Dry","Wet"))+
+  scale_fill_manual(values = c("white","tan4","steelblue4"),
+                    labels = c("Average","Dry","Wet"))+
+  scale_shape_manual(values = c(21,22,24))+
   scale_y_continuous(breaks = c(0.015,0.03,0.045,0.06,0.075), expand = c(0,0))+
   scale_x_continuous(limits = c(0.69,1.04), breaks = c(0.75,0.8,0.85,0.9,0.95,1.00),
                      expand = c(0,0))+
-  labs(x ="Cumulative Juvenile Survival", y ="Growth (k)")+
+  labs(x ="Juvenile Survival (< 10 mm SL)", y ="Growth (k)")+
   annotate(geom = "text", x = 0.73, y = 0.018, label = "Declining", size = 8)+
   annotate(geom = "text", x = 0.925, y = 0.075, label = "Increasing", size = 8)+
   #annotate(geom = "text", x = 0.993, y = 0.05, label = "(model parameters)",
@@ -455,3 +461,10 @@ ggsave(here("out","Appendix1-figS2_isoclineconditions.png"),
 ggsave(here("out","Appendix1-figS2_isoclineconditions.pdf"),
        p25, device = pdf,
        units = "in", width = 5, height = 4)
+
+
+SFER.plot <- p24+(patch.artifact/patchinvert)
+
+ggsave(here("out","SFER_figure.png"),
+       SFER.plot, device = png,
+       units = "in", width = 16, height = 8)

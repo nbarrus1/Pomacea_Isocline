@@ -30,10 +30,10 @@
      inkscape:zoom="1.2637004"
      inkscape:cx="338.29221"
      inkscape:cy="345.41415"
-     inkscape:window-width="1600"
-     inkscape:window-height="1191"
+     inkscape:window-width="1920"
+     inkscape:window-height="991"
      inkscape:window-x="-9"
-     inkscape:window-y="-4"
+     inkscape:window-y="-9"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1" /><defs
      id="defs2"><clipPath
@@ -791,7 +791,7 @@
        transform="translate(-0.61438561,-1.4335664)"><tspan
          x="90.792274"
          y="177.30307"
-         id="tspan3241">Daily Growth (k)</tspan></text><g
+         id="tspan3164">Daily Growth (k)</tspan></text><g
        id="g365"
        transform="matrix(0.35277777,0,0,-0.35277777,3.3104499,204.66342)" /><g
        id="g367"
@@ -904,7 +904,7 @@
            y="167.02631"
            sodipodi:role="line"
            id="tspan465"
-           style="stroke-width:0.352778">Site 2</tspan></text></g><g
+           style="stroke-width:0.352778">WCA3A</tspan></text></g><g
        id="g469"
        transform="matrix(0.35277777,0,0,-0.35277777,3.3104499,204.66342)" /><g
        id="g471"
