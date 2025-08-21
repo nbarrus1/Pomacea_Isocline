@@ -1,3 +1,6 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/xenodo.15611001.svg)](https://zenodo.org/doi/10.5281/zenodo.15611001)
+
+
 This repository contains the code, output, manuscript drafts and data associated with the manuscript titled "Interpreting field measurments of juvenile growth and survival rates with population growth isoclines."
 
 Authors:
